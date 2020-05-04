@@ -4,6 +4,7 @@ import getpass
 
 
 def login():
+    "Login function that logs user in system."
 
     os.system("clear")
     print_menu("Login:")
@@ -190,7 +191,7 @@ def admin_login(admin_id):
 
             while True:
 
-                books = sql_query("SELECT BookID,Title,Author,Year FROM Books",None)
+                books = sql_query("SELECT BookID,Title,Author,Year FROM Books")
 
                 print_books(books)
 
@@ -199,7 +200,7 @@ def admin_login(admin_id):
                     if answer == 0:
                         break
 
-                    if linear_search(books,answer):
+                    if not linear_search(books,answer):
                         system_print("Wrong input!Try again.")
                     else:
                         break
@@ -315,7 +316,7 @@ def register():
             WHERE LastName=%s AND Address=%s""",(last_name,address))
 
 
-    role_id = sql_query("SELECT RoleID FROM Roles WHERE Title='Visitor';",None)
+    role_id = sql_query("SELECT RoleID FROM Roles WHERE Title='Visitor';")
 
     # Inserting into users.
     sql_command("""INSERT INTO Users (Username,Password,RoleID,PersonID)

@@ -1,4 +1,4 @@
 ## Library
 
 - ### Running
-    To run the app, just type ```bash make```. Python3.8 is used.
+    To run the app, just type ```make```. Python3.8 is used.

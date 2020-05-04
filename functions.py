@@ -4,9 +4,10 @@ import time
 
 
 def give_book_to(target_id):
+    "Gives target a book."
 
     available_books = sql_query("""SELECT BookID,Title,Author,Year FROM Books
-                WHERE UserID IS NULL""",None)
+                WHERE UserID IS NULL""")
 
     if print_books(available_books):
 
@@ -28,6 +29,7 @@ def give_book_to(target_id):
 
 
 def take_book_from(target_id):
+    "Takes from target a book."
 
     books_of_user = sql_query("""SELECT BookID,Title,Author,Year FROM Books
                     WHERE UserID=%s""",(target_id,))
@@ -53,6 +55,7 @@ def take_book_from(target_id):
 
 
 def print_books(books):
+    "Prints iterable's fields. Returns True/False for Not empty/Empty."
 
     if len(books) == 0:
         system_print("There are no books!")
@@ -64,15 +67,18 @@ def print_books(books):
             print("\t",end="")
             for item in each_book:
                 print(item, end=" ")
-        print("\n------------------------------------------------------\n")
+            print("\n")
+        print("------------------------------------------------------\n")
         print("\n")
         return True
 
 
 
 def print_users():
+    "Prints ID,Username and Role of all users except admin's.Returns list of them."
+
     users = sql_query("""SELECT UserID,Username,RoleID FROM Users
-                WHERE RoleID<>3""",None)
+                WHERE RoleID<>3""")
     
     if len(users) == 0:
         system_print("There are no users!")
@@ -93,6 +99,8 @@ def print_users():
 
 
 def print_menu(given):
+    "Prints menu with several choices so the user can choose from."
+
     print("\n\t\t*****************************************")
     print("\t\t\t\t", end="")
     temp = list(given)
@@ -107,11 +115,15 @@ def print_menu(given):
 
 
 def system_print(given):
+    "Prints library's system's messages to console."
+
     print("\n\n\t\t## {} ##\n\n".format(given))
 
 
 
 def linear_search(data,id):
+    "Checks if item is in iterable data. Returns True or False"
+
     found = False
     for each_row in data:
         if int(each_row[0]) == id:
@@ -122,6 +134,7 @@ def linear_search(data,id):
 
 
 def show_personal_data(user_id):
+    "Prints user's data from table \"Persons\"."
     
     person_id = sql_query("""SELECT PersonID FROM Users 
                     WHERE UserID=%s""",(user_id,))
@@ -142,6 +155,7 @@ def show_personal_data(user_id):
 
 
 def check_username(given):
+    "Checks if username belongs to another user. Returns True or False"
 
     users = sql_query("SELECT UserID FROM Users WHERE Username = BINARY %s",(given,))
 
@@ -153,6 +167,8 @@ def check_username(given):
 
 
 def check_password(given):
+    "Checks if given password meets some standards. Returns True or False"
+
     length = len(given)
     if length < 6 or length > 12:
         system_print("Password's length must be 6 to 12 characters.")
@@ -170,13 +186,16 @@ def check_password(given):
 
 
 def disconnect():
+    "Used when user is disconnecting from system."
+
     print_menu("Disconnecting...")
     time.sleep(0.5)
     os.system("clear")
 
 
 
-def sql_command(command,data):
+def sql_command(command,data=None):
+    "Executes SQL commands like \"INSERT INTO\" or \"UPDATE\"."
 
     cnx = connect_to_database()
     cursor = cnx.cursor(buffered=True)
@@ -202,8 +221,8 @@ def sql_command(command,data):
 
 
 
-
-def sql_query(query,data):
+def sql_query(query,data=None):
+    "Executes SQL queries. Returns list of tuples."
 
     cnx = connect_to_database()
     cursor = cnx.cursor(buffered=True)
