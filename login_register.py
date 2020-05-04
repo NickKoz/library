@@ -13,7 +13,7 @@ def login():
         password = getpass.getpass("Password: ")
 
         ids = sql_query("""SELECT UserID FROM Users 
-            WHERE Username = BINARY %s AND Password=%s""",(username,password))
+            WHERE Username = BINARY %s AND Password = BINARY %s""",(username,password))
 
         if len(ids) == 0:
            system_print("Wrong name,password or both!Try again.")
