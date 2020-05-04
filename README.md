@@ -1,2 +1,3 @@
-# library
-Library-system terminal app written in Python
+# Library
+
+    To run the app, just type **make**.
