@@ -1,4 +1,14 @@
 ## Library
 
-- ### Running
-    To run the app, just type ```make```. Python3.8 is used.
+
+- ### Install
+    ```bash
+    git clone https://github.com/NickKoz/library.git
+    pip install mysql-connector-python
+    ```
+
+- ### Run
+    ```bash
+    cd ./library
+    make
+    ```
