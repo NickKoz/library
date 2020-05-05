@@ -2,8 +2,6 @@
 
 Terminal app using MySQL Connector/Python for access in database.
   
-Check **Requirements** section in order to install the necessary tools.
-  
 
 ### Requirements
 
