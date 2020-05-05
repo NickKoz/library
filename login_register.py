@@ -115,17 +115,18 @@ def editor_login(editor_id):
 def admin_login(admin_id):
     "Login for admins"
     
-    os.system("clear")
-    print_menu("ADMIN")
-    show_personal_data(admin_id)
-
+    
     while True:
+        os.system("clear")
+        print_menu("ADMIN")
+        show_personal_data(admin_id)
+
         while True:
             menu = "1.Show users\n2.Delete user\n3.Generate book\n"
             menu = menu + "4.Delete book\n5.Change role\n6.Change account's data\n7.Disconnect"
             print_menu(menu)
             choice = int(input("Your choice: "))
-            if choice in range(1,7):
+            if choice in range(1,8):
                 break
             else:
                 system_print("Wrong input!")

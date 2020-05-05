@@ -100,7 +100,7 @@ def print_users():
 
 
 def print_menu(given):
-    "Prints menu with several choices so the user can choose from."
+    "Prints given as menu so the user can choose from."
 
     print("\n\t\t*****************************************")
     print("\t\t\t\t", end="")
@@ -145,12 +145,12 @@ def show_personal_data(user_id):
 
     data = row[0]
 
-    print("Last Name: {}".format(data[0]))
-    print("First Name: {}".format(data[1]))
+    print("Last name: {}".format(data[0]))
+    print("First name: {}".format(data[1]))
     print("City: {}".format(data[2]))
     print("Address: {}".format(data[3]))
-    print("Postal Code: {}".format(data[4]))
-    print("Phone Number: {}".format(data[5]))
+    print("Postal code: {}".format(data[4]))
+    print("Phone number: {}".format(data[5]))
     print("Email: {}".format(data[6]))
 
 
@@ -160,7 +160,7 @@ def check_username(given):
 
     users = sql_query("SELECT UserID FROM Users WHERE Username = BINARY %s",(given,))
 
-    if len(users) > 0:
+    if len(users) > 0 or len(given) == 0:
         return False
 
     return True
@@ -189,11 +189,11 @@ def check_password(given):
 def change_data(id):
     "Changes user's data."
 
+    os.system("clear")
     while True:
-        os.system("clear")
         system_print("Please select what field you want to change.")
         menu = "1.Username\n2.Password\n3.Last name\n4.First name\n5.City\n6.Address\n"
-        menu = menu + "7.Postal code\n8.Phone number\n9.Email\n10.Exit"
+        menu = menu + "7.Postal code\n8.Phone number\n9.Email\n10.Exit\n"
         print_menu(menu)
 
         while True:
@@ -203,6 +203,9 @@ def change_data(id):
             else:
                 system_print("Wrong input!Try again.")
 
+        os.system("clear")
+
+        # Username
         if choice == 1:
             while True:
                 username = input("Please give new username: ")
@@ -210,13 +213,15 @@ def change_data(id):
                     
                     break
                 else:
-                    system_print("Username already exists!")
+                    system_print("Invalid username!")
             
             sql_command("UPDATE Users SET Username=%s",(username,))
 
             system_print("Username changed!")
 
+            continue
 
+        # Password
         elif choice == 2:
             while True:
                 while True:
@@ -231,9 +236,73 @@ def change_data(id):
                 else:
                     system_print("Passwords don't match!Try again.")
 
+            sql_command("UPDATE Users SET Password=%s",(password,))
 
+            system_print("Password changed!")
 
+            continue
 
+        # Last name
+        elif choice == 3:
+            mess_input = "Last name: "
+            column = "LastName"
+            smess = "Last name changed!"
+        
+        # First name
+        elif choice == 4:
+            mess_input = "First name: "
+            column = "FirstName"
+            smess = "First name changed!"
+        
+        # City
+        elif choice == 5:
+            mess_input = "City: "
+            column = "City"
+            smess = "City changed!"
+        
+        # Address
+        elif choice == 6:
+            mess_input = "Address: "
+            column = "Address"
+            smess = "Address changed!"
+
+        # Postal code
+        elif choice == 7:
+            mess_input = "Postal code: "
+            column = "PostalCode"
+            smess = "Postal code changed!"
+
+        # Phone number
+        elif choice == 8:
+            while True:
+                data = input("Phone number: ")
+                if len(data) == 10:
+                    break
+                else:
+                    system_print("Wrong phone number!")
+            
+            sql_command("UPDATE Persons SET PhoneNumber=%s",(data,))
+
+            system_print("Phone number changed!")
+
+            continue
+        
+        # Email
+        elif choice == 9:
+            mess_input = "Email: "
+            column = "Email"
+            smess = "Email changed!"
+
+        # Exit
+        else:
+            os.system("clear")
+            break
+
+        data = input("\n"+ mess_input)
+
+        sql_command("UPDATE Persons SET %s = %s" % (column,"%s"),(data,))
+
+        system_print(smess)
 
 
 

@@ -23,4 +23,5 @@ while True:
     else:
         break
 
+os.system("clear")
 print_menu("Bye.")
