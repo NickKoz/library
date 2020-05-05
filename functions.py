@@ -1,6 +1,7 @@
 from db.db_connection import *
 import os
 import time
+import getpass
 
 
 def give_book_to(target_id):
@@ -182,6 +183,57 @@ def check_password(given):
         return False
 
     return True
+
+
+
+def change_data(id):
+    "Changes user's data."
+
+    while True:
+        os.system("clear")
+        system_print("Please select what field you want to change.")
+        menu = "1.Username\n2.Password\n3.Last name\n4.First name\n5.City\n6.Address\n"
+        menu = menu + "7.Postal code\n8.Phone number\n9.Email\n10.Exit"
+        print_menu(menu)
+
+        while True:
+            choice = int(input("Please give your option: "))
+            if choice in range(1,11):
+                break
+            else:
+                system_print("Wrong input!Try again.")
+
+        if choice == 1:
+            while True:
+                username = input("Please give new username: ")
+                if check_username(username):
+                    
+                    break
+                else:
+                    system_print("Username already exists!")
+            
+            sql_command("UPDATE Users SET Username=%s",(username,))
+
+            system_print("Username changed!")
+
+
+        elif choice == 2:
+            while True:
+                while True:
+                    # Getpass function does password invisible
+                    password = getpass.getpass("New password: ")
+                    if check_password(password):
+                        break
+
+                confirm_password = getpass.getpass("Confirm Password: ")
+                if password == confirm_password:
+                    break
+                else:
+                    system_print("Passwords don't match!Try again.")
+
+
+
+
 
 
 

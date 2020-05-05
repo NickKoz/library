@@ -1,10 +1,9 @@
 from functions import *
-import getpass
 
 
 
 def login():
-    "Login function that logs user in system."
+    "Login function that connects user in system."
 
     os.system("clear")
     print_menu("Login:")
@@ -13,6 +12,8 @@ def login():
         username = input("Username: ")
         password = getpass.getpass("Password: ")
 
+        # BINARY keyword before string because we want to give
+        # case sensitive data.
         ids = sql_query("""SELECT UserID FROM Users 
             WHERE Username = BINARY %s AND Password = BINARY %s""",(username,password))
 
@@ -40,14 +41,16 @@ def login():
 # Types of login accordingly to role.
 
 def visitor_login(visitor_id):
+    "Login for visitors."
+
     os.system("clear")
     print_menu("VISITOR")
     show_personal_data(visitor_id)
-    while 1:
-        while 1:
+    while True:
+        while True:
             print_menu("1.Show books\n2.Disconnect")
             choice = int(input("Your choice: "))
-            if choice == 1 or choice == 2:
+            if choice in range(1,3):
                 break
             else:
                 system_print("Wrong input!Try again.")
@@ -64,6 +67,7 @@ def visitor_login(visitor_id):
 
 
 def editor_login(editor_id):
+    "Login for editors"
 
     os.system("clear")
     print_menu("EDITOR")
@@ -71,16 +75,20 @@ def editor_login(editor_id):
 
     while True:
         while True:
-            print_menu("1.Give book\n2.Take book\n3.Disconnect")
+            print_menu("1.Give book\n2.Take book\n3.Change account's data\n4.Disconnect")
             choice = int(input("Your choice: "))
-            if choice == 1 or choice == 2 or choice == 3:
+            if choice in range(1,5):
                 break
             else:
                 system_print("Wrong input!Try again.")
 
-        if choice == 3:
+        if choice == 4:
             disconnect()
             break
+
+        if choice == 3:
+            change_data(editor_id)
+            continue
 
 
         print("\n\tPlease enter ID of target person ", end="")
@@ -105,6 +113,7 @@ def editor_login(editor_id):
 
 
 def admin_login(admin_id):
+    "Login for admins"
     
     os.system("clear")
     print_menu("ADMIN")
@@ -112,10 +121,11 @@ def admin_login(admin_id):
 
     while True:
         while True:
-            
-            print_menu("""1.Show users\n2.Delete user\n3.Generate book\n4.Delete book\n5.Change role\n6.Disconnect""")
+            menu = "1.Show users\n2.Delete user\n3.Generate book\n"
+            menu = menu + "4.Delete book\n5.Change role\n6.Change account's data\n7.Disconnect"
+            print_menu(menu)
             choice = int(input("Your choice: "))
-            if choice == 1 or choice == 2 or choice == 3 or choice == 4 or choice == 5 or choice == 6:
+            if choice in range(1,7):
                 break
             else:
                 system_print("Wrong input!")
@@ -214,51 +224,58 @@ def admin_login(admin_id):
 
         # Change role of user.
         elif choice == 5:
-            os.system("clear")
-            print("\n\tPlease enter ID of target person ", end="")
-            print("in order to change his role.\n")
 
             users = print_users()
 
-            print("")
+            if len(users) != 0:
 
-            while True:
-                target_id = int(input("ID: "))
-                
-                if linear_search(users,target_id):
-                    break
-                else:
-                    system_print("Wrong input!Try again.")
-
-            while True:
                 while True:
-                    print("What kind of role do you want to give them?\n")
-                    print_menu("1.Visitor\n2.Editor\n3.Exit")
-                    role = int(input("\nPlease give your option: "))
-                    if role == 1 or role == 2 or role == 3:
-                        break
-                    else:
-                        system_print("Wrong input!Try again.")
+                    os.system("clear")
+                    print_users()
 
-                if role == 3:
-                    break
+                    while True:
+                        mess = "\nPlease enter ID of target person in order to change his role:"
+                        mess = mess + "(Press 0 to exit) "
+                        target_id = int(input(mess))
+                        
+                        if linear_search(users,target_id):
+                            break
+                        else:
+                            system_print("Wrong input!Try again.")
 
-                data = sql_query("""SELECT RoleID FROM Users 
-                                        WHERE UserID=%s""", (target_id,))
+                    while True:
+                        while True:
+                            print("What kind of role do you want to give them?\n")
+                            print_menu("1.Visitor\n2.Editor\n3.Exit")
+                            role = int(input("\nPlease give your option: "))
+                            if role == 1 or role == 2 or role == 3:
+                                break
+                            else:
+                                system_print("Wrong input!Try again.")
 
-                role_of_target = data[0][0]
+                        if role == 3:
+                            break
 
-                if role == role_of_target:
-                    system_print("They already have this role!")
-                else:
-                    sql_command("""UPDATE Users SET RoleID=%s 
-                        WHERE UserID=%s""",(role, target_id,))
-                    
-                    system_print("Role changed!")
-                    break
+                        data = sql_query("""SELECT RoleID FROM Users 
+                                                WHERE UserID=%s""", (target_id,))
+
+                        role_of_target = data[0][0]
+
+                        if role == role_of_target:
+                            system_print("They already have this role!")
+                        else:
+                            sql_command("""UPDATE Users SET RoleID=%s 
+                                WHERE UserID=%s""",(role, target_id,))
+                            
+                            system_print("Role changed!")
+                            break
+
+        # Change account's data/personal data.
+        elif choice == 6:
+            change_data(admin_id)
 
         # Disconnect
-        elif choice == 6:
+        elif choice == 7:
             disconnect()
             break
 
