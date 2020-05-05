@@ -2,12 +2,13 @@ import mysql.connector
 from mysql.connector import errorcode
 
 def connect_to_database():
-    # Connecting to MySQL database using mysql connector.
+    "Connecting to MySQL database using mysql connector."
+
     try:
         cnx = mysql.connector.connect(
             host="localhost",
-            user="root",
-            passwd="28121999",
+            user="library_user",
+            passwd="1234",
             database="Library"
         )
     except mysql.connector.Error as CnxError:
