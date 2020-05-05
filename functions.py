@@ -1,4 +1,4 @@
-from db_connection import *
+from db.db_connection import *
 import os
 import time
 
