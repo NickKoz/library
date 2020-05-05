@@ -1,11 +1,9 @@
 ## Library
 
-Terminal app using MySQL Connector/Python for access in database. Check **Requirements** section
-in a terminal and you're ready to run the app. (for Linux systems only)
+Terminal app using MySQL Connector/Python for access in database.
   
-Make sure that you've installed MySQL Connector for Python.
+Check **Requirements** section in order to install the necessary tools.
   
-
 
 ### Requirements
 
