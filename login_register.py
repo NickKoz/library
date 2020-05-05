@@ -44,23 +44,24 @@ def visitor_login(visitor_id):
     "Login for visitors."
 
     os.system("clear")
-    print_menu("VISITOR")
-    show_personal_data(visitor_id)
+    
     while True:
+        print_menu("VISITOR")
+        show_personal_data(visitor_id)
         while True:
-            print_menu("1.Show books\n2.Disconnect")
+            print_menu("1.Show books\n2.Change account's data\n3.Disconnect")
             choice = int(input("Your choice: "))
-            if choice in range(1,3):
+            if choice in range(1,4):
                 break
             else:
                 system_print("Wrong input!Try again.")
+
         if choice == 1:
-
             books = sql_query("""SELECT Title,Author,Year FROM Books 
-            WHERE UserID=%s""",(visitor_id,))
-            
+                            WHERE UserID=%s""",(visitor_id,))
             print_books(books)
-
+        elif choice == 2:
+            change_data(visitor_id)
         else:
             disconnect()
             break
@@ -70,10 +71,10 @@ def editor_login(editor_id):
     "Login for editors"
 
     os.system("clear")
-    print_menu("EDITOR")
-    show_personal_data(editor_id)
 
     while True:
+        print_menu("EDITOR")
+        show_personal_data(editor_id)
         while True:
             print_menu("1.Give book\n2.Take book\n3.Change account's data\n4.Disconnect")
             choice = int(input("Your choice: "))
@@ -115,9 +116,9 @@ def editor_login(editor_id):
 def admin_login(admin_id):
     "Login for admins"
     
+    os.system("clear")
     
     while True:
-        os.system("clear")
         print_menu("ADMIN")
         show_personal_data(admin_id)
 
