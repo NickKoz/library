@@ -14,7 +14,7 @@ def login():
 
         # BINARY keyword before string because we want to give
         # case sensitive data.
-        ids = sql_query("""SELECT UserID FROM Users 
+        ids = sql_query("""SELECT UsersID FROM Users 
             WHERE Username = BINARY %s AND Password = BINARY %s""",(username,password))
 
         if len(ids) == 0:
@@ -25,8 +25,8 @@ def login():
             break
             
 
-    data = sql_query("""SELECT RoleID FROM Users 
-            WHERE UserID=%s""",(user_id,))
+    data = sql_query("""SELECT RolesID FROM Users 
+            WHERE UsersID=%s""",(user_id,))
 
     role = data[0][0]
 
@@ -58,7 +58,7 @@ def visitor_login(visitor_id):
 
         if choice == 1:
             books = sql_query("""SELECT Title,Author,Year FROM Books 
-                            WHERE UserID=%s""",(visitor_id,))
+                            WHERE UsersID=%s""",(visitor_id,))
             print_books(books)
         elif choice == 2:
             change_data(visitor_id)
@@ -100,7 +100,7 @@ def editor_login(editor_id):
         while True:
             id = int(input("User's ID: "))
 
-            userIDs = sql_query("SELECT UserID FROM Users WHERE UserID=%s",(id,))
+            userIDs = sql_query("SELECT UsersID FROM Users WHERE UsersID=%s",(id,))
 
             if len(userIDs) == 0:
                 system_print("User with ID: {} doesn't exist!Try again.".format(id))
@@ -160,17 +160,17 @@ def admin_login(admin_id):
                 if answer == 0:
                     break
 
-                person_id = sql_query("""SELECT PersonID FROM Users
-                        WHERE UserID=%s""",(answer,))
+                person_id = sql_query("""SELECT PersonsID FROM Users
+                        WHERE UsersID=%s""",(answer,))
 
                 # Firstly, we take all books that target may have.
-                sql_command("UPDATE Books SET UserID=NULL WHERE UserID=%s",(answer,))
+                sql_command("UPDATE Books SET UsersID=NULL WHERE UsersID=%s",(answer,))
 
                 # We delete user.
-                sql_command("DELETE FROM Users WHERE UserID=%s",(answer,))
+                sql_command("DELETE FROM Users WHERE UsersID=%s",(answer,))
                 
                 # We delete their data.
-                sql_command("DELETE FROM Persons WHERE PersonID=%s",(person_id[0][0],))
+                sql_command("DELETE FROM Persons WHERE PersonsID=%s",(person_id[0][0],))
 
                 system_print("User with ID: {} is deleted!".format(answer))
 
@@ -203,7 +203,7 @@ def admin_login(admin_id):
 
             while True:
 
-                books = sql_query("SELECT BookID,Title,Author,Year FROM Books")
+                books = sql_query("SELECT BooksID,Title,Author,Year FROM Books")
 
                 print_books(books)
 
@@ -220,7 +220,7 @@ def admin_login(admin_id):
                 if answer == 0:
                     break
                 
-                sql_command("DELETE FROM Books WHERE BookID=%s",(answer,))
+                sql_command("DELETE FROM Books WHERE BooksID=%s",(answer,))
 
                 system_print("Book is deleted!")
 
@@ -258,16 +258,16 @@ def admin_login(admin_id):
                         if role == 3:
                             break
 
-                        data = sql_query("""SELECT RoleID FROM Users 
-                                                WHERE UserID=%s""", (target_id,))
+                        data = sql_query("""SELECT RolesID FROM Users 
+                                                WHERE UsersID=%s""", (target_id,))
 
                         role_of_target = data[0][0]
 
                         if role == role_of_target:
                             system_print("They already have this role!")
                         else:
-                            sql_command("""UPDATE Users SET RoleID=%s 
-                                WHERE UserID=%s""",(role, target_id,))
+                            sql_command("""UPDATE Users SET RolesID=%s 
+                                WHERE UsersID=%s""",(role, target_id,))
                             
                             system_print("Role changed!")
                             break
@@ -331,14 +331,14 @@ def register():
                 VALUES(%s,%s,%s,%s,%s,%s,%s)""",(last_name, first_name, city, postal, address, phone, email))
 
 
-    person_id = sql_query("""SELECT PersonID FROM Persons 
+    person_id = sql_query("""SELECT PersonsID FROM Persons 
             WHERE LastName=%s AND Address=%s""",(last_name,address))
 
 
-    role_id = sql_query("SELECT RoleID FROM Roles WHERE Title='Visitor';")
+    role_id = sql_query("SELECT RolesID FROM Roles WHERE Title='Visitor';")
 
     # Inserting into users.
-    sql_command("""INSERT INTO Users (Username,Password,RoleID,PersonID)
+    sql_command("""INSERT INTO Users (Username,Password,RolesID,PersonsID)
             VALUES (%s,%s,%s,%s)""",(username, password, role_id[0][0], person_id[0][0]))
     
     system_print("User is created successfully!")

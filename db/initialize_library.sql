@@ -18,4 +18,4 @@ INSERT INTO Roles (Title) VALUES ("Admin");
 
 INSERT INTO Persons (LastName,FirstName) VALUES ("Test","test");
 
-INSERT INTO Users (Username,Password,RoleID,PersonID) VALUES ("Test","123456789",3,1);
+INSERT INTO Users (Username,Password,RolesID,PersonsID) VALUES ("Test","123456789",3,1);
