@@ -1,8 +1,12 @@
 from db.sql import *
+from check_search import *
 
 
-def print_books(books):
-    "Prints iterable's fields. Returns True/False for Not empty/Empty."
+def print_books(books=None):
+    """Prints iterable's fields. Returns True/False for Not empty/Empty."""
+
+    if books is None:
+        books = sql_query("SELECT BooksID,Title,Author,Year FROM Books")
 
     if len(books) == 0:
         system_print("There are no books!")
@@ -11,7 +15,7 @@ def print_books(books):
         system_print("Books are:")
         print("------------------------------------------------------\n")
         for each_book in books:
-            print("\t",end="")
+            print("\t", end="")
             for item in each_book:
                 print(item, end=" ")
             print("\n")
@@ -21,26 +25,33 @@ def print_books(books):
 
 
 
-def print_users():
-    "Prints ID,Username and Role of all users except admin's.Returns list of them."
+def print_users(users=None):
+    """Prints ID,Username and Role of all users except admin's.Returns list of them."""
 
-    users = sql_query("""SELECT UsersID,Username,RolesID FROM Users
-                WHERE RolesID<>3""")
-    
+    if users is None:
+        users = sql_query("""SELECT UsersID,Username,RolesID FROM Users
+                    WHERE RolesID<>3""")
+        
     if len(users) == 0:
         system_print("There are no users!")
         return users
 
-    system_print("Users are:")
-    print("------------------------------------------------------\n")
-    for each in users:
-        print("\t\tID: {} | {} | Role: ".format(each[0],each[1]),end="")
-        if int(each[2]) == 1:
-            print("Visitor\n")
-        elif int(each[2]) == 2:
-            print("Editor\n")
-    print("------------------------------------------------------")
-    print("\n\n")
+    elif len(users) == 1:
+        print("\t\tID: {} | {} | Role: ".format(users[0][0], users[0][1]),end="")
+        print("Visitor\n") if int(users[0][2]) == 1 else print("Editor\n")
+
+    else:
+        system_print("Users are:")
+        print("------------------------------------------------------\n")
+        for each in users:
+            print("\t\tID: {} | {} | Role: ".format(each[0], each[1]), end="")
+            if int(each[2]) == 1:
+                print("Visitor\n")
+            elif int(each[2]) == 2:
+                print("Editor\n")
+        print("------------------------------------------------------")
+        print("\n\n")
+
     return users
 
 
@@ -68,12 +79,24 @@ def system_print(given):
 
 
 
+def search_menu(table, column, value):
+    """Searches in table in column for value."""
+
+    ids = search(table, column, value)
+
+    if column == "Users":
+        print_users()
+    elif column == "Books":
+        print_books()
+
+    return ids
+
 
 def show_personal_data(user_id):
-    "Prints user's data from table \"Persons\"."
+    """Prints user's data from table \"Persons\"."""
     
     person_id = sql_query("""SELECT PersonsID FROM Users 
-                    WHERE UsersID=%s""",(user_id,))
+                    WHERE UsersID=%s""", (user_id,))
 
     row = sql_query("""SELECT LastName,FirstName,City,Address,PostalCode,PhoneNumber,Email
             FROM Persons WHERE PersonsID=%s""",(person_id[0][0],))
@@ -87,4 +110,3 @@ def show_personal_data(user_id):
     print("Postal code: {}".format(data[4]))
     print("Phone number: {}".format(data[5]))
     print("Email: {}".format(data[6]))
-    

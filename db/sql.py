@@ -1,17 +1,17 @@
 from db.db_connection import *
 
 
-def sql_command(command,data=None):
-    "Executes SQL commands like \"INSERT INTO\" or \"UPDATE\"."
+def sql_command(command, data=None):
+    """Executes SQL commands like \"INSERT INTO\" or \"UPDATE\"."""
 
     cnx = connect_to_database()
-    cursor = cnx.cursor(buffered=True)
+    cursor = cnx.cursor(dictionary=True)
 
     try:
         if data is None:
             cursor.execute(command)
         else:
-            cursor.execute(command,data)
+            cursor.execute(command, data)
 
     except mysql.connector.ProgrammingError as err:
         print(err)
@@ -27,11 +27,11 @@ def sql_command(command,data=None):
     close_connection(cnx)
 
 
-def sql_query(query,data=None):
-    "Executes SQL queries. Returns list of tuples."
+def sql_query(query, data=None):
+    """Executes SQL queries. Returns list of dictionaries."""
 
     cnx = connect_to_database()
-    cursor = cnx.cursor(buffered=True)
+    cursor = cnx.cursor(dictionary=True)
 
     try:
         if data is None:

@@ -1,15 +1,16 @@
 import mysql.connector
 from mysql.connector import errorcode
+from db.db_settings import *
 
 def connect_to_database():
     "Connecting to MySQL database using mysql connector."
 
     try:
         cnx = mysql.connector.connect(
-            host="localhost",
-            user="library_user",
-            passwd="1234",
-            database="Library"
+            host=DB_HOST,
+            user=DB_USER,
+            passwd=DB_PASS,
+            database=DB_NAME
         )
     except mysql.connector.Error as CnxError:
         if CnxError.errno == errorcode.ER_ACCESS_DENIED_ERROR:

@@ -3,11 +3,11 @@ import time
 import getpass
 from db.sql import *
 from print import *
-from check import *
+from check_search import *
 
 
 def give_book_to(target_id):
-    "Gives target a book."
+    """Gives target a book."""
 
     available_books = sql_query("""SELECT BooksID,Title,Author,Year FROM Books
                 WHERE UsersID IS NULL""")
@@ -35,7 +35,7 @@ def take_book_from(target_id):
     "Takes from target a book."
 
     books_of_user = sql_query("""SELECT BooksID,Title,Author,Year FROM Books
-                    WHERE UsersID=%s""",(target_id,))
+                    WHERE UsersID=%s""", (target_id,))
 
     if print_books(books_of_user):
 

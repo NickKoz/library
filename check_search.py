@@ -45,10 +45,13 @@ def check_password(given):
 
 
 
-def search(table,column,value):
-    "Searches in table for record with value in column. Returns ID(s) of record(s)"
+def search(table, column=None, value=None):
+    """Searches in table for record(s) with value in column. Returns ID(s) of record(s)"""
 
-    return sql_query("""SELECT {}ID FROM {} WHERE {} 
-            LIKE '{}%' OR WHERE {} LIKE '%{}' OR WHERE {} LIKE '%{}%' 
-            OR WHERE {} LIKE '{}'
-            """.format(table,table,column,value,column,value,column,value,column,value))
+    if value is None or value == "" or column is None:
+        return sql_query("SELECT {0}ID FROM {0}".format(table))
+
+    return sql_query("""SELECT {0}ID FROM {0} WHERE {1} 
+            LIKE '{2}%' OR {1} LIKE '%{2}' OR {1} LIKE '%{2}%' 
+            OR {1} LIKE '{2}'
+            """.format(table, column, value))

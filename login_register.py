@@ -15,20 +15,21 @@ def login():
         # BINARY keyword before string because we want to give
         # case sensitive data.
         ids = sql_query("""SELECT UsersID FROM Users 
-            WHERE Username = BINARY %s AND Password = BINARY %s""",(username,password))
+            WHERE Username = BINARY %s AND Password = BINARY %s""", (username,password))
 
         if len(ids) == 0:
            system_print("Wrong name,password or both!Try again.")
         else:
             system_print("Successfully logged in!")
-            user_id = ids[0][0]
+            print(ids)
+            user_id = ids[0]['UsersID']
             break
             
 
     data = sql_query("""SELECT RolesID FROM Users 
-            WHERE UsersID=%s""",(user_id,))
+            WHERE UsersID=%s""", (user_id,))
 
-    role = data[0][0]
+    role = data[0]["RolesID"]
 
     if role == 1:
         visitor_login(user_id)
@@ -114,7 +115,7 @@ def editor_login(editor_id):
 
 
 def admin_login(admin_id):
-    "Login for admins"
+    """Login for admins"""
     
     os.system("clear")
     
@@ -127,7 +128,7 @@ def admin_login(admin_id):
             menu = menu + "4.Delete book\n5.Change role\n6.Change account's data\n7.Disconnect"
             print_menu(menu)
             choice = int(input("Your choice: "))
-            if choice in range(1,8):
+            if choice in range(1, 8):
                 break
             else:
                 system_print("Wrong input!")
@@ -142,17 +143,16 @@ def admin_login(admin_id):
             os.system("clear")
 
             while True:
-                users = print_users()
+                username = input("Please search for a username to delete: ")
 
-                if len(users) == 0:
-                    break
+                ids = search_menu("Users", "Username", username)
 
                 while True:
                     answer = int(input("""Please select a user to be deleted by giving its ID:(Press 0 for exit.) """))
                     
                     if answer == 0:
                         break
-                    if linear_search(users,answer):
+                    if linear_search(ids, answer):
                         break
                     else:
                         system_print("Wrong input!Try again.")
