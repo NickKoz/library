@@ -84,9 +84,9 @@ def search_menu(table, column, value):
 
     ids = search(table, column, value)
 
-    if column == "Users":
+    if table == "Users":
         print_users()
-    elif column == "Books":
+    elif table == "Books":
         print_books()
 
     return ids

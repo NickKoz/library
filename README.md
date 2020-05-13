@@ -3,8 +3,6 @@
 Terminal app simulation of a library system using MySQL Connector/Python for access in database.
   
 The idea for the project was made from the semester class **Designing and Using Database Systems** of the department I attend.  
-
-The whole project was made from me. It's my first big project in Python and I'm proud of it :D . Although, I can still develop it everyday by adding new features and -who knows- someday I will add a **GUI**.
   
 
 ## Requirements

@@ -5,7 +5,7 @@ def sql_command(command, data=None):
     """Executes SQL commands like \"INSERT INTO\" or \"UPDATE\"."""
 
     cnx = connect_to_database()
-    cursor = cnx.cursor(dictionary=True)
+    cursor = cnx.cursor(buffered=True)
 
     try:
         if data is None:
@@ -28,10 +28,10 @@ def sql_command(command, data=None):
 
 
 def sql_query(query, data=None):
-    """Executes SQL queries. Returns list of dictionaries."""
+    """Executes SQL queries. Returns list of tuples."""
 
     cnx = connect_to_database()
-    cursor = cnx.cursor(dictionary=True)
+    cursor = cnx.cursor(buffered=True)
 
     try:
         if data is None:

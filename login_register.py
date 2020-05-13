@@ -21,15 +21,14 @@ def login():
            system_print("Wrong name,password or both!Try again.")
         else:
             system_print("Successfully logged in!")
-            print(ids)
-            user_id = ids[0]['UsersID']
+            user_id = ids[0][0]
             break
             
 
     data = sql_query("""SELECT RolesID FROM Users 
             WHERE UsersID=%s""", (user_id,))
 
-    role = data[0]["RolesID"]
+    role = data[0][0]
 
     if role == 1:
         visitor_login(user_id)
@@ -202,10 +201,13 @@ def admin_login(admin_id):
             os.system("clear")
 
             while True:
+                
+                book = input("Please search for a book title to delete: ")
 
-                books = sql_query("SELECT BooksID,Title,Author,Year FROM Books")
+                books = search_menu("Books","Title",book)
 
-                print_books(books)
+                if len(books) == 0:
+                    break
 
                 while True:
                     answer = int(input("""Please select a book to be deleted by giving its ID:(Press 0 for exit.) """))
