@@ -58,7 +58,9 @@ def take_book_from(target_id):
 
 
 def change_data(id):
-    "Changes user's data."
+    """Changes user's data."""
+    
+    person_id = sql_query("SELECT PersonsID FROM Users WHERE UsersID=%s",(id,))
 
     os.system("clear")
     while True:
@@ -81,12 +83,11 @@ def change_data(id):
             while True:
                 username = input("Please give new username: ")
                 if check_username(username):
-                    
                     break
                 else:
                     system_print("Invalid username!")
             
-            sql_command("UPDATE Users SET Username=%s",(username,))
+            sql_command("UPDATE Users SET Username=%s WHERE UsersID=%s",(username,id))
 
             system_print("Username changed!")
 
@@ -107,7 +108,7 @@ def change_data(id):
                 else:
                     system_print("Passwords don't match!Try again.")
 
-            sql_command("UPDATE Users SET Password=%s",(password,))
+            sql_command("UPDATE Users SET Password=%s WHERE UsersID=%s",(password,id))
 
             system_print("Password changed!")
 
@@ -151,8 +152,9 @@ def change_data(id):
                     break
                 else:
                     system_print("Wrong phone number!")
-            
-            sql_command("UPDATE Persons SET PhoneNumber=%s",(data,))
+
+            sql_command("""UPDATE Persons p SET p.PhoneNumber=%s 
+            WHERE PersonsID=%s""",(data,person_id[0][0]))
 
             system_print("Phone number changed!")
 
@@ -171,7 +173,8 @@ def change_data(id):
 
         data = input("\n"+ mess_input)
 
-        sql_command("UPDATE Persons SET %s = %s" % (column,"%s"),(data,))
+        sql_command("""UPDATE Persons SET {} = %s WHERE
+        PersonsID=%s""".format(column),(data,person_id[0][0]))
 
         system_print(smess)
 

@@ -241,11 +241,17 @@ def admin_login(admin_id):
                         mess = "\nPlease enter ID of target person in order to change his role:"
                         mess = mess + "(Press 0 to exit) "
                         target_id = int(input(mess))
+
+                        if target_id == 0:
+                            break
                         
                         if linear_search(users,target_id):
                             break
                         else:
                             system_print("Wrong input!Try again.")
+
+                    if target_id == 0:
+                        break
 
                     while True:
                         while True:
