@@ -1,8 +1,7 @@
 from db.sql import *
-from print import *
+import print
 
-
-def linear_search(data,id):
+def linear_search(data, id):
     "Checks if item is in iterable data. Returns True or False"
 
     found = False
@@ -17,7 +16,7 @@ def linear_search(data,id):
 def check_username(given):
     "Checks if username belongs to another user. Returns True or False"
 
-    users = sql_query("SELECT UsersID FROM Users WHERE Username = BINARY %s",(given,))
+    users = sql_query("SELECT UsersID FROM Users WHERE Username = BINARY %s", (given,))
 
     if len(users) > 0 or len(given) == 0:
         return False
@@ -31,14 +30,14 @@ def check_password(given):
 
     length = len(given)
     if length < 6 or length > 12:
-        system_print("Password's length must be 6 to 12 characters.")
+        print.system_print("Password's length must be 6 to 12 characters.")
         return False
     counter = 0
     for c in given:
         if ' ' <= c <= '@':
             counter += 1
     if counter == 0:
-        system_print("Password must have at least one special character.")
+        print.system_print("Password must have at least one special character.")
         return False
 
     return True

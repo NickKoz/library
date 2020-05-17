@@ -68,7 +68,7 @@ def visitor_login(visitor_id):
 
 
 def editor_login(editor_id):
-    "Login for editors"
+    """Login for editors"""
 
     os.system("clear")
 
@@ -78,7 +78,7 @@ def editor_login(editor_id):
         while True:
             print_menu("1.Give book\n2.Take book\n3.Change account's data\n4.Disconnect")
             choice = int(input("Your choice: "))
-            if choice in range(1,5):
+            if choice in range(1, 5):
                 break
             else:
                 system_print("Wrong input!Try again.")
@@ -100,7 +100,7 @@ def editor_login(editor_id):
         while True:
             id = int(input("User's ID: "))
 
-            userIDs = sql_query("SELECT UsersID FROM Users WHERE UsersID=%s",(id,))
+            userIDs = sql_query("SELECT UsersID FROM Users WHERE UsersID=%s", (id,))
 
             if len(userIDs) == 0:
                 system_print("User with ID: {} doesn't exist!Try again.".format(id))
@@ -160,16 +160,16 @@ def admin_login(admin_id):
                     break
 
                 person_id = sql_query("""SELECT PersonsID FROM Users
-                        WHERE UsersID=%s""",(answer,))
+                        WHERE UsersID=%s""", (answer,))
 
                 # Firstly, we take all books that target may have.
-                sql_command("UPDATE Books SET UsersID=NULL WHERE UsersID=%s",(answer,))
+                sql_command("UPDATE Books SET UsersID=NULL WHERE UsersID=%s", (answer,))
 
                 # We delete user.
-                sql_command("DELETE FROM Users WHERE UsersID=%s",(answer,))
+                sql_command("DELETE FROM Users WHERE UsersID=%s", (answer,))
                 
                 # We delete their data.
-                sql_command("DELETE FROM Persons WHERE PersonsID=%s",(person_id[0][0],))
+                sql_command("DELETE FROM Persons WHERE PersonsID=%s", (person_id[0][0],))
 
                 system_print("User with ID: {} is deleted!".format(answer))
 
@@ -192,7 +192,7 @@ def admin_login(admin_id):
                     break
 
 
-            sql_command("INSERT INTO Books (Title,Author,Year) VALUES(%s,%s,%s)",(title, author, year))
+            sql_command("INSERT INTO Books (Title,Author,Year) VALUES(%s,%s,%s)", (title, author, year))
             
             system_print("Book inserted!")
 
@@ -214,7 +214,7 @@ def admin_login(admin_id):
                     if answer == 0:
                         break
 
-                    if not linear_search(books,answer):
+                    if not linear_search(books, answer):
                         system_print("Wrong input!Try again.")
                     else:
                         break
@@ -222,7 +222,7 @@ def admin_login(admin_id):
                 if answer == 0:
                     break
                 
-                sql_command("DELETE FROM Books WHERE BooksID=%s",(answer,))
+                sql_command("DELETE FROM Books WHERE BooksID=%s", (answer,))
 
                 system_print("Book is deleted!")
 
@@ -336,11 +336,11 @@ def register():
     # Inserting into persons.
     sql_command("""INSERT INTO Persons (LastName,FirstName,City,PostalCode,
                 Address,PhoneNumber,Email)
-                VALUES(%s,%s,%s,%s,%s,%s,%s)""",(last_name, first_name, city, postal, address, phone, email))
+                VALUES(%s,%s,%s,%s,%s,%s,%s)""", (last_name, first_name, city, postal, address, phone, email))
 
 
     person_id = sql_query("""SELECT PersonsID FROM Persons 
-            WHERE LastName=%s AND Address=%s""",(last_name,address))
+            WHERE LastName=%s AND Address=%s""", (last_name, address))
 
 
     role_id = sql_query("SELECT RolesID FROM Roles WHERE Title='Visitor';")

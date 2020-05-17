@@ -1,7 +1,6 @@
 import os
 import time
 import getpass
-from db.sql import *
 from print import *
 from check_search import *
 
@@ -19,20 +18,20 @@ def give_book_to(target_id):
             if book_id == 0:
                 return
 
-            if linear_search(available_books,book_id):
+            if linear_search(available_books, book_id):
                 break
             else:
                 system_print("Wrong input!Try again.")
 
         sql_command("""UPDATE Books SET UsersID=%s 
-            WHERE BooksID=%s""",(target_id, book_id))
+            WHERE BooksID=%s""", (target_id, book_id))
 
         system_print("Book is given!")
 
 
 
 def take_book_from(target_id):
-    "Takes from target a book."
+    """Takes from target a book."""
 
     books_of_user = sql_query("""SELECT BooksID,Title,Author,Year FROM Books
                     WHERE UsersID=%s""", (target_id,))
@@ -44,14 +43,14 @@ def take_book_from(target_id):
             if book_id == 0:
                 return
 
-            if linear_search(books_of_user,book_id):
+            if linear_search(books_of_user, book_id):
                 break
             else:
                 system_print("Wrong input!Try again.")
 
 
         sql_command("""UPDATE Books SET UsersID=NULL 
-            WHERE BooksID=%s""",(book_id, ))
+            WHERE BooksID=%s""", (book_id, ))
 
         system_print("Book with ID: {} is removed!".format(book_id))
 
@@ -71,7 +70,7 @@ def change_data(id):
 
         while True:
             choice = int(input("Please give your option: "))
-            if choice in range(1,11):
+            if choice in range(1, 11):
                 break
             else:
                 system_print("Wrong input!Try again.")
@@ -87,7 +86,7 @@ def change_data(id):
                 else:
                     system_print("Invalid username!")
             
-            sql_command("UPDATE Users SET Username=%s WHERE UsersID=%s",(username,id))
+            sql_command("UPDATE Users SET Username=%s WHERE UsersID=%s", (username, id))
 
             system_print("Username changed!")
 
@@ -108,7 +107,7 @@ def change_data(id):
                 else:
                     system_print("Passwords don't match!Try again.")
 
-            sql_command("UPDATE Users SET Password=%s WHERE UsersID=%s",(password,id))
+            sql_command("UPDATE Users SET Password=%s WHERE UsersID=%s", (password, id))
 
             system_print("Password changed!")
 
@@ -154,7 +153,7 @@ def change_data(id):
                     system_print("Wrong phone number!")
 
             sql_command("""UPDATE Persons p SET p.PhoneNumber=%s 
-            WHERE PersonsID=%s""",(data,person_id[0][0]))
+            WHERE PersonsID=%s""", (data, person_id[0][0]))
 
             system_print("Phone number changed!")
 
@@ -171,17 +170,17 @@ def change_data(id):
             os.system("clear")
             break
 
-        data = input("\n"+ mess_input)
+        data = input("\n" + mess_input)
 
         sql_command("""UPDATE Persons SET {} = %s WHERE
-        PersonsID=%s""".format(column),(data,person_id[0][0]))
+        PersonsID=%s""".format(column), (data, person_id[0][0]))
 
         system_print(smess)
 
 
 
 def disconnect():
-    "Used when user is disconnecting from system."
+    """Used when user is disconnecting from system."""
 
     print_menu("Disconnecting...")
     time.sleep(0.5)

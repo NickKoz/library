@@ -1,5 +1,5 @@
 from db.sql import *
-from check_search import *
+import check_search
 
 
 def print_books(books=None):
@@ -35,11 +35,6 @@ def print_users(users=None):
     if len(users) == 0:
         system_print("There are no users!")
         return users
-
-    elif len(users) == 1:
-        print("\t\tID: {} | {} | Role: ".format(users[0][0], users[0][1]),end="")
-        print("Visitor\n") if int(users[0][2]) == 1 else print("Editor\n")
-
     else:
         system_print("Users are:")
         print("------------------------------------------------------\n")
@@ -82,7 +77,7 @@ def system_print(given):
 def search_menu(table, column, value):
     """Searches in table in column for value."""
 
-    ids = search(table, column, value)
+    ids = check_search.search(table, column, value)
 
     if table == "Users":
         print_users()
