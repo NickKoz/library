@@ -1,9 +1,14 @@
 import mysql.connector
 from mysql.connector import errorcode
-from db.db_settings import *
+
+DB_HOST = "localhost"
+DB_USER = "library_user"
+DB_PASS = "1234"
+DB_NAME = "Library"
+
 
 def connect_to_database():
-    "Connecting to MySQL database using mysql connector."
+    """Connecting to MySQL database using mysql connector."""
 
     try:
         cnx = mysql.connector.connect(
