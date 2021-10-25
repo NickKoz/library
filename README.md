@@ -31,12 +31,4 @@ cd ./library
 make
 ```
 
-## Versions
-
-* 1.9.1
-    * ADD: Adding feature for updating user's personal data.
-    * CHANGE: Updated user's interface for the new feature.
-* 1.8.1
-    * FIX: Minor bug fixes
-    * FIX: Change repo's structure.
 
